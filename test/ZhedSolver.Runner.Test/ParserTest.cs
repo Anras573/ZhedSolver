@@ -3,7 +3,7 @@ namespace ZhedSolver.Runner.Test;
 public class ParserTest
 {
     [Fact]
-    public void SolverCanParseInputAsString()
+    public void CanParseInputAsString()
     {
         const string input = """
 --------
@@ -18,11 +18,11 @@ public class ParserTest
 
         var result = Parser.Parse(input.Split(Environment.NewLine));
 
-        Assert.True(result);
+        Assert.NotNull(result);
     }
     
     [Fact]
-    public void SolverCanParseInputAsStringArray()
+    public void CanParseInputAsStringArray()
     {
         var input = new[]
         {
@@ -38,6 +38,6 @@ public class ParserTest
 
         var result = Parser.Parse(input);
 
-        Assert.True(result);
+        Assert.NotNull(result);
     }
 }
