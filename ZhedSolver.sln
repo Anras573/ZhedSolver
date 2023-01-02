@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{4D37AE24-96CB-4C5D-A69C-C4AE874B914B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZhedSolver.Runner.Test", "test\ZhedSolver.Runner.Test\ZhedSolver.Runner.Test.csproj", "{524F3C9D-3233-4466-8F0D-194FB87DEF8F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{56B7D6C7-B90D-4D41-88A6-435CF764A7A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZhedSolver.Runner", "src\ZhedSolver.Runner\ZhedSolver.Runner.csproj", "{E9663A2E-56F8-46F3-8540-403FE1D93C47}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "input", "input", "{8B8A9516-68AB-4349-B1E0-8BD59838BC27}"
+	ProjectSection(SolutionItems) = preProject
+		input\11.txt = input\11.txt
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{524F3C9D-3233-4466-8F0D-194FB87DEF8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{524F3C9D-3233-4466-8F0D-194FB87DEF8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{524F3C9D-3233-4466-8F0D-194FB87DEF8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{524F3C9D-3233-4466-8F0D-194FB87DEF8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9663A2E-56F8-46F3-8540-403FE1D93C47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9663A2E-56F8-46F3-8540-403FE1D93C47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9663A2E-56F8-46F3-8540-403FE1D93C47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9663A2E-56F8-46F3-8540-403FE1D93C47}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{524F3C9D-3233-4466-8F0D-194FB87DEF8F} = {4D37AE24-96CB-4C5D-A69C-C4AE874B914B}
+		{E9663A2E-56F8-46F3-8540-403FE1D93C47} = {56B7D6C7-B90D-4D41-88A6-435CF764A7A4}
+	EndGlobalSection
+EndGlobal
