@@ -1,6 +1,9 @@
-﻿namespace ZhedSolver.Runner;
+﻿using ZhedSolver.Runner.Models;
+using ZhedSolver.Runner.SolveStrategies;
+
+namespace ZhedSolver.Runner;
 
 public interface ISolver
 {
-    List<string> Solve();
+    List<Step> Solve(ISolveStrategy strategy);
 }

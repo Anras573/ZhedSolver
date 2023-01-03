@@ -2,7 +2,7 @@ namespace ZhedSolver.Runner.Test;
 
 public class ParserTest
 {
-    [Fact]
+    [Fact] // x: 4 y: 3
     public void CanParseInputAsString()
     {
         const string input = """
