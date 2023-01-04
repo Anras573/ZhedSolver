@@ -16,7 +16,7 @@ public class ParserTest
 --------
 """;
 
-        var result = Parser.Parse(input.Split(Environment.NewLine));
+        var result = Parser.Parse(input);
 
         Assert.NotNull(result);
     }
