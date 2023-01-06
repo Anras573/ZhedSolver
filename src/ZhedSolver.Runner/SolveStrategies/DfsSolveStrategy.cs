@@ -4,14 +4,6 @@ namespace ZhedSolver.Runner.SolveStrategies;
 
 public class DfsSolveStrategy : ISolveStrategy
 {
-    private static class Directions
-    {
-        public static readonly Vector2 Down = new (0, 1);
-        public static readonly Vector2 Up = new (0, -1);
-        public static readonly Vector2 Left = new (-1, 0);
-        public static readonly Vector2 Right = new (1, 0);
-    }
-
     public List<Step> Solve(Dictionary<Vector2, int> map, Vector2 goal)
     {
         var steps = new List<Step>();
@@ -32,7 +24,6 @@ public class DfsSolveStrategy : ISolveStrategy
 
         foreach (var (position, value) in map)
         {
-
             var nextMap = map
                 .Where(kv => kv.Key != position)
                 .ToDictionary(kv => kv.Key, kv => kv.Value);
