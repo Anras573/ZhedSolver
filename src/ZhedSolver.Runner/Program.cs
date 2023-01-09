@@ -10,7 +10,7 @@ var file = File.ReadAllLines(filepath);
 
 var steps = Parser
     .Parse(file)
-    .Solve(new DfsSolveStrategy());
+    .Solve(new BfsSolveStrategy());
 
 var sb = new StringBuilder();
 
