@@ -5,7 +5,7 @@ namespace ZhedSolver.Runner.SolveStrategies;
 
 public class BfsSolveStrategy : ISolveStrategy
 {
-    public List<Step> Solve(Dictionary<Vector2, int> map, Vector2 goal)
+    public List<Step> Solve(Dictionary<Vector2, int> map, Vector2 goal, Bounds bounds)
     {
         var visited = map.Keys.ToHashSet();
         
