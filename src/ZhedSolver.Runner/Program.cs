@@ -3,14 +3,14 @@ using System.Text;
 using ZhedSolver.Runner;
 using ZhedSolver.Runner.SolveStrategies;
 
-const string filepath = "input/11.txt";
+const string filepath = "input/16.txt";
 var timestamp = Stopwatch.GetTimestamp();
 
 var file = File.ReadAllLines(filepath);
 
 var steps = Parser
     .Parse(file)
-    .Solve(new BfsSolveStrategy());
+    .Solve(new DfsSolveStrategy());
 
 var sb = new StringBuilder();
 

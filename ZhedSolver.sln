@@ -14,6 +14,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "input", "input", "{8B8A9516-68AB-4349-B1E0-8BD59838BC27}"
 	ProjectSection(SolutionItems) = preProject
 		input\11.txt = input\11.txt
+		input\16.txt = input\16.txt
 	EndProjectSection
 EndProject
 Global
