@@ -3,7 +3,7 @@ using System.Text;
 using ZhedSolver.Runner;
 using ZhedSolver.Runner.SolveStrategies;
 
-const string filepath = "input/16.txt";
+const string filepath = "input/14.txt";
 var timestamp = Stopwatch.GetTimestamp();
 
 var file = File.ReadAllLines(filepath);
