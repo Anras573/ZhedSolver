@@ -10,6 +10,7 @@ public class DfsSolveStrategyTest
 
         var actual = sut.Solve(map, goal, bounds);
 
+        Assert.NotEmpty(actual);
         Assert.Equal(expected, actual);
     }
 }

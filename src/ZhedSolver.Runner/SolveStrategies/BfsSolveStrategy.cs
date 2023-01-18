@@ -4,11 +4,6 @@ namespace ZhedSolver.Runner.SolveStrategies;
 
 public class BfsSolveStrategy : ISolveStrategy
 {
-    private readonly List<Vector2> _directions = new()
-    {
-        Directions.Left, Directions.Right, Directions.Up, Directions.Down
-    };
-
     private readonly Dictionary<Vector2, Direction> _directionMap = new()
     {
         { Directions.Down, Direction.Down },

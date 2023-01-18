@@ -10,6 +10,7 @@ public class ParallelPermutationStrategyTest
 
         var actual = sut.Solve(map, goal, bounds);
 
+        Assert.NotEmpty(actual);
         Assert.False(expected.Except(actual).Any());
     }
 }

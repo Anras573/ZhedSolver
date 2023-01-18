@@ -120,20 +120,4 @@ public class DfsSolveStrategy : ISolveStrategy
 
         return moves;
     }
-    
-    private static Vector2 MovePosition(Vector2 position, Vector2 direction, int steps, HashSet<Vector2> visited)
-    {
-        while (steps != 0)
-        {
-            position += direction;
-            
-            if (visited.Contains(position))
-                continue;
-
-            visited.Add(position);
-            steps--;
-        }
-
-        return position;
-    }
 }
