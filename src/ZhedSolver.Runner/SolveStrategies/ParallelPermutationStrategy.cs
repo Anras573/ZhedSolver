@@ -150,7 +150,7 @@ public class ParallelPermutationStrategy : ISolveStrategy
     
     private static List<Vector2> Move(Vector2 position, Vector2 direction, int steps, HashSet<Vector2> visited)
     {
-        var moves = new List<Vector2>();
+        var moves = new List<Vector2>(steps);
         
         while (steps != 0)
         {
