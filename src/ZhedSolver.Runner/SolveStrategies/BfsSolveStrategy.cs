@@ -1,155 +1,76 @@
-﻿using System.Collections.Concurrent;
-using ZhedSolver.Runner.Models;
+﻿using ZhedSolver.Runner.Models;
 
 namespace ZhedSolver.Runner.SolveStrategies;
 
 public class BfsSolveStrategy : ISolveStrategy
 {
-    private Bounds _bounds;
+    private readonly List<Vector2> _directions = new()
+    {
+        Directions.Left, Directions.Right, Directions.Up, Directions.Down
+    };
+
+    private readonly Dictionary<Vector2, Direction> _directionMap = new()
+    {
+        { Directions.Down, Direction.Down },
+        { Directions.Left, Direction.Left },
+        { Directions.Right, Direction.Right },
+        { Directions.Up, Direction.Up }
+    };
+
     public List<Step> Solve(Dictionary<Vector2, int> map, Vector2 goal, Bounds bounds)
     {
-        var visited = map.Keys.ToHashSet();
-        _bounds = bounds;
-        
-        return Bfs(map, goal, visited);
+        return Bfs(map, goal, bounds);
     }
 
-    private List<Step> Bfs(Dictionary<Vector2, int> map, Vector2 goal, HashSet<Vector2> visited)
+    private List<Step> Bfs(Dictionary<Vector2, int> map, Vector2 goal, Bounds bounds)
     {
-        var stepsOfSteps = new ConcurrentBag<List<Step>>();
-        var queue = new ConcurrentQueue<State>();
-
-        foreach (var (position, value) in map)
+        var start = map.OrderByDescending(kv => kv.Value).ToList();
+        var queue = new Queue<State>();
+        var visited = new HashSet<Vector2>(map.Select(kv => kv.Key));
+        queue.Enqueue(new State(start, visited, new List<Step>()));
+        while (queue.Count != 0)
         {
-            var nextMap = map
-                .Where(kv => kv.Key != position)
-                .ToDictionary(kv => kv.Key, kv => kv.Value);
-        
-            if (position.X != _bounds.Max.X)
-            {
-                // Direction right
-                var newVisited = new HashSet<Vector2>(visited);
-                var newPosition = Move(position, Directions.Right, value, newVisited);
-                var steps = new List<Step> { new (position, value, Direction.Right) };
+            var state = queue.Dequeue();
 
-                var state = new State(nextMap, newVisited, steps, newPosition);
-                queue.Enqueue(state);
-            }
-            
-            if (position.Y != _bounds.Max.Y)
+            foreach (var field in state.Map)
             {
-                // Direction down
-                var newVisited = new HashSet<Vector2>(visited);
-                var newPosition = Move(position, Directions.Down, value, newVisited);
-                var steps = new List<Step> { new (position, value, Direction.Down) };
+                var nextMap = state.Map
+                    .Where(kv => kv.Key != field.Key)
+                    .ToList();
+                
+                foreach (var dir in GetDirections(field.Key, bounds))
+                {
+                    var newVisited = new HashSet<Vector2>(state.Visited);
+                    var newCoordinate = MovePosition(field.Key, dir, field.Value, newVisited);
+                    var newPath = new List<Step>(state.Steps) { new (field.Key, field.Value, _directionMap[dir]) };
 
-                var state = new State(nextMap, newVisited, steps, newPosition);
-                queue.Enqueue(state);
-            }
-            
-            if (position.X != _bounds.Min.X)
-            {
-                // Direction left
-                var newVisited = new HashSet<Vector2>(visited);
-                var newPosition = Move(position, Directions.Left, value, newVisited);
-                var steps = new List<Step> { new (position, value, Direction.Left) };
-
-                var state = new State(nextMap, newVisited, steps, newPosition);
-                queue.Enqueue(state);
-            }
-            
-            if (position.Y != _bounds.Min.Y)
-            {
-                // Direction up
-                var newVisited = new HashSet<Vector2>(visited);
-                var newPosition = Move(position, Directions.Up, value, newVisited);
-                var steps = new List<Step> { new (position, value, Direction.Up) };
-
-                var state = new State(nextMap, newVisited, steps, newPosition);
-                queue.Enqueue(state);
+                    if (newCoordinate.Equals(goal))
+                        return newPath;
+                
+                    queue.Enqueue(new State(nextMap, newVisited, newPath));
+                }
             }
         }
         
-        Parallel.For(0, 8, (i, p) =>
-        {
-            while (queue.TryDequeue(out var state))
-            {
-                if (state.Position == goal)
-                {
-                    stepsOfSteps.Add(state.Steps);
-                    p.Break();
-                    return;
-                }
+        return new List<Step>();
+    }
 
-                foreach (var (position, value) in state.Map)
-                {
-                    var nextMap = state.Map
-                        .Where(kv => kv.Key != position)
-                        .ToDictionary(kv => kv.Key, kv => kv.Value);
-        
-                    if (position.X != _bounds.Max.X)
-                    {
-                        // Direction right
-                        var newVisited = new HashSet<Vector2>(state.Visited);
-                        var newPosition = Move(position, Directions.Right, value, newVisited);
-                        var newSteps = new List<Step>(state.Steps)
-                        {
-                            new (position, value, Direction.Right)
-                        };
+    private static IEnumerable<Vector2> GetDirections(Vector2 position, Bounds bounds)
+    {
+        if (position.X != bounds.Max.X)
+            yield return Directions.Right;
 
-                        var newState = new State(nextMap, newVisited, newSteps, newPosition);
-                        queue.Enqueue(newState);
-                    }
-            
-                    if (position.Y != _bounds.Max.Y)
-                    {
-                        // Direction down
-                        var newVisited = new HashSet<Vector2>(state.Visited);
-                        var newPosition = Move(position, Directions.Down, value, newVisited);
-                        var newSteps = new List<Step>(state.Steps)
-                        {
-                            new (position, value, Direction.Down)
-                        };
+        if (position.Y != bounds.Max.Y)
+            yield return Directions.Down;
 
-                        var newState = new State(nextMap, newVisited, newSteps, newPosition);
-                        queue.Enqueue(newState);
-                    }
-            
-                    if (position.X != _bounds.Min.X)
-                    {
-                        // Direction left
-                        var newVisited = new HashSet<Vector2>(state.Visited);
-                        var newPosition = Move(position, Directions.Left, value, newVisited);
-                        var newSteps = new List<Step>(state.Steps)
-                        {
-                            new (position, value, Direction.Left)
-                        };
-                    
-                        var newState = new State(nextMap, newVisited, newSteps, newPosition);
-                        queue.Enqueue(newState);
-                    }
-            
-                    if (position.Y != _bounds.Min.Y)
-                    {
-                        // Direction up
-                        var newVisited = new HashSet<Vector2>(state.Visited);
-                        var newPosition = Move(position, Directions.Up, value, newVisited);
-                        var newSteps = new List<Step>(state.Steps)
-                        {
-                            new (position, value, Direction.Up)
-                        };
+        if (position.X != bounds.Min.X)
+            yield return Directions.Left;
 
-                        var newState = new State(nextMap, newVisited, newSteps, newPosition);
-                        queue.Enqueue(newState);
-                    }
-                }
-            }
-        });
-        
-        return stepsOfSteps.Any() ? stepsOfSteps.First() : Array.Empty<Step>().ToList();
+        if (position.Y != bounds.Min.Y)
+            yield return Directions.Up;
     }
     
-    private static Vector2 Move(Vector2 position, Vector2 direction, int steps, HashSet<Vector2> visited)
+    private static Vector2 MovePosition(Vector2 position, Vector2 direction, int steps, HashSet<Vector2> visited)
     {
         while (steps != 0)
         {
@@ -164,6 +85,6 @@ public class BfsSolveStrategy : ISolveStrategy
 
         return position;
     }
-
-    private record State(Dictionary<Vector2, int> Map, HashSet<Vector2> Visited, List<Step> Steps, Vector2 Position);
+    
+    private record State(List<KeyValuePair<Vector2, int>> Map, HashSet<Vector2> Visited, List<Step> Steps);
 }

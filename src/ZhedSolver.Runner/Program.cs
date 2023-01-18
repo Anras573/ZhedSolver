@@ -10,7 +10,7 @@ var file = File.ReadAllLines(filepath);
 
 var steps = Parser
     .Parse(file)
-    .Solve(new DfsSolveStrategy());
+    .Solve(new ParallelPermutationStrategy());
 
 var sb = new StringBuilder();
 
