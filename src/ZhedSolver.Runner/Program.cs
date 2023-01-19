@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Text;
+using BenchmarkDotNet.Running;
 using ZhedSolver.Runner;
 using ZhedSolver.Runner.SolveStrategies;
 
@@ -31,3 +32,5 @@ sb.AppendLine();
 sb.AppendLine($"Execution took: {Stopwatch.GetElapsedTime(timestamp).TotalMilliseconds} ms");
 
 Console.WriteLine(sb.ToString());
+
+//BenchmarkRunner.Run<Level14>();
