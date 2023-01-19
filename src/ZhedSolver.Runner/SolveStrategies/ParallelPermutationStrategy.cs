@@ -27,16 +27,15 @@ public class ParallelPermutationStrategy : ISolveStrategy
 
         var stepsOfSteps = new ConcurrentBag<List<Step>>();
 
-        Parallel.ForEach(permutations.Where(EndsWithPossibleSolution), (permutation, state) =>
+        Parallel.ForEach(permutations.Where(EndsWithPossibleSolution).Select(p => p.ToList()), (permutation, state) =>
         {
-            var permutationList = permutation.ToList();
-            var visited = permutationList.ToHashSet();
-            var mapQueue = new Queue<Vector2>(permutationList);
-            var steps = Dfs(mapQueue, new List<Step>(permutationList.Count), visited);
+            var visited = permutation.ToHashSet();
+            var mapQueue = new Queue<Vector2>(permutation);
+            var steps = Dfs(mapQueue, new Stack<Step>(), visited);
 
             if (steps.Count > 0)
             {
-                stepsOfSteps.Add(steps);
+                stepsOfSteps.Add(steps.Reverse().ToList());
                 state.Stop();
             }
         });
@@ -44,11 +43,11 @@ public class ParallelPermutationStrategy : ISolveStrategy
         return stepsOfSteps.FirstOrDefault() ?? Array.Empty<Step>().ToList();
     }
     
-    private List<Step> Dfs(Queue<Vector2> map, List<Step> steps, HashSet<Vector2> visited)
+    private Stack<Step> Dfs(Queue<Vector2> map, Stack<Step> steps, HashSet<Vector2> visited)
     {
         void Rewind(List<Vector2> moves)
         {
-            steps.RemoveAt(steps.Count - 1);
+            steps.Pop();
 
             foreach (var move in moves)
             {
@@ -57,7 +56,7 @@ public class ParallelPermutationStrategy : ISolveStrategy
         }
 
         if (!map.Any())
-            return Array.Empty<Step>().ToList();
+            return new Stack<Step>();
 
         var position = map.Dequeue();
         var value = _valueLookup[position];
@@ -81,7 +80,7 @@ public class ParallelPermutationStrategy : ISolveStrategy
         {
             // Direction right
             var moves = Move(position, Directions.Right, value, visited);
-            steps.Add(new Step(position, value, Direction.Right));
+            steps.Push(new Step(position, value, Direction.Right));
 
             if (moves[^1] == _goal) 
                 return steps;
@@ -98,7 +97,7 @@ public class ParallelPermutationStrategy : ISolveStrategy
         {
             // Direction down
             var moves = Move(position, Directions.Down, value, visited);
-            steps.Add(new Step(position, value, Direction.Down));
+            steps.Push(new Step(position, value, Direction.Down));
 
             if (moves[^1] == _goal) 
                 return steps;
@@ -115,7 +114,7 @@ public class ParallelPermutationStrategy : ISolveStrategy
         {
             // Direction left
             var moves = Move(position, Directions.Left, value, visited);
-            steps.Add(new Step(position, value, Direction.Left));
+            steps.Push(new Step(position, value, Direction.Left));
 
             if (moves[^1] == _goal) 
                 return steps;
@@ -132,7 +131,7 @@ public class ParallelPermutationStrategy : ISolveStrategy
         {
             // Direction up
             var moves = Move(position, Directions.Up, value, visited);
-            steps.Add(new Step(position, value, Direction.Up));
+            steps.Push(new Step(position, value, Direction.Up));
 
             if (moves[^1] == _goal) 
                 return steps;
@@ -144,8 +143,8 @@ public class ParallelPermutationStrategy : ISolveStrategy
         
             Rewind(moves);
         }
-    
-        return Array.Empty<Step>().ToList();
+
+        return new Stack<Step>();
     }
     
     private static List<Vector2> Move(Vector2 position, Vector2 direction, int steps, HashSet<Vector2> visited)
