@@ -1,4 +1,5 @@
-﻿using ZhedSolver.Runner.Models;
+﻿using ZhedSolver.Runner.Helpers;
+using ZhedSolver.Runner.Models;
 
 namespace ZhedSolver.Runner.SolveStrategies;
 
@@ -36,7 +37,7 @@ public class BfsSolveStrategy : ISolveStrategy
                 foreach (var dir in GetDirections(field.Key, bounds))
                 {
                     var newVisited = new HashSet<Vector2>(state.Visited);
-                    var newCoordinate = MovePosition(field.Key, dir, field.Value, newVisited);
+                    var newCoordinate = MovementHelper.MoveAndGetLastPosition(field.Key, dir, field.Value, newVisited);
                     var newPath = new List<Step>(state.Steps) { new (field.Key, field.Value, _directionMap[dir]) };
 
                     if (newCoordinate.Equals(goal))
@@ -64,22 +65,6 @@ public class BfsSolveStrategy : ISolveStrategy
         if (position.Y != bounds.Min.Y)
             yield return Directions.Up;
     }
-    
-    private static Vector2 MovePosition(Vector2 position, Vector2 direction, int steps, HashSet<Vector2> visited)
-    {
-        while (steps != 0)
-        {
-            position += direction;
-            
-            if (visited.Contains(position))
-                continue;
 
-            visited.Add(position);
-            steps--;
-        }
-
-        return position;
-    }
-    
     private record State(List<KeyValuePair<Vector2, int>> Map, HashSet<Vector2> Visited, List<Step> Steps);
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using ZhedSolver.Runner.Helpers;
 using ZhedSolver.Runner.Models;
 using ZhedSolver.Runner.Utils;
 
@@ -79,7 +80,7 @@ public class ParallelPermutationStrategy : ISolveStrategy
         if (!position.X.Equals(_bounds.Max.X) && (!lastRound || (lastRound && targetDirection == Direction.Right)))
         {
             // Direction right
-            var moves = Move(position, Directions.Right, value, visited);
+            var moves = MovementHelper.MoveAndGetMovement(position, Directions.Right, value, visited);
             steps.Push(new Step(position, value, Direction.Right));
 
             if (moves[^1] == _goal) 
@@ -96,7 +97,7 @@ public class ParallelPermutationStrategy : ISolveStrategy
         if (!position.Y.Equals(_bounds.Max.Y) && (!lastRound || (lastRound && targetDirection == Direction.Down)))
         {
             // Direction down
-            var moves = Move(position, Directions.Down, value, visited);
+            var moves = MovementHelper.MoveAndGetMovement(position, Directions.Down, value, visited);
             steps.Push(new Step(position, value, Direction.Down));
 
             if (moves[^1] == _goal) 
@@ -113,7 +114,7 @@ public class ParallelPermutationStrategy : ISolveStrategy
         if (!position.X.Equals(_bounds.Min.X) && (!lastRound || (lastRound && targetDirection == Direction.Left)))
         {
             // Direction left
-            var moves = Move(position, Directions.Left, value, visited);
+            var moves = MovementHelper.MoveAndGetMovement(position, Directions.Left, value, visited);
             steps.Push(new Step(position, value, Direction.Left));
 
             if (moves[^1] == _goal) 
@@ -130,7 +131,7 @@ public class ParallelPermutationStrategy : ISolveStrategy
         if (!position.Y.Equals(_bounds.Min.Y) && (!lastRound || (lastRound && targetDirection == Direction.Up)))
         {
             // Direction up
-            var moves = Move(position, Directions.Up, value, visited);
+            var moves = MovementHelper.MoveAndGetMovement(position, Directions.Up, value, visited);
             steps.Push(new Step(position, value, Direction.Up));
 
             if (moves[^1] == _goal) 
@@ -145,24 +146,5 @@ public class ParallelPermutationStrategy : ISolveStrategy
         }
 
         return new Stack<Step>();
-    }
-    
-    private static List<Vector2> Move(Vector2 position, Vector2 direction, int steps, HashSet<Vector2> visited)
-    {
-        var moves = new List<Vector2>(steps);
-        
-        while (steps != 0)
-        {
-            position += direction;
-            
-            if (visited.Contains(position))
-                continue;
-
-            visited.Add(position);
-            moves.Add(position);
-            steps--;
-        }
-
-        return moves;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using ZhedSolver.Runner.Helpers;
 using ZhedSolver.Runner.Models;
 
 namespace ZhedSolver.Runner.SolveStrategies;
@@ -29,7 +30,7 @@ public class ParallelBfsSolveStrategy : ISolveStrategy
             {
                 // Direction right
                 var newVisited = new HashSet<Vector2>(visited);
-                var newPosition = Move(position, Directions.Right, value, newVisited);
+                var newPosition = MovementHelper.MoveAndGetLastPosition(position, Directions.Right, value, newVisited);
                 var steps = new List<Step> { new (position, value, Direction.Right) };
 
                 var state = new State(nextMap, newVisited, steps, newPosition);
@@ -40,7 +41,7 @@ public class ParallelBfsSolveStrategy : ISolveStrategy
             {
                 // Direction down
                 var newVisited = new HashSet<Vector2>(visited);
-                var newPosition = Move(position, Directions.Down, value, newVisited);
+                var newPosition = MovementHelper.MoveAndGetLastPosition(position, Directions.Down, value, newVisited);
                 var steps = new List<Step> { new (position, value, Direction.Down) };
 
                 var state = new State(nextMap, newVisited, steps, newPosition);
@@ -51,7 +52,7 @@ public class ParallelBfsSolveStrategy : ISolveStrategy
             {
                 // Direction left
                 var newVisited = new HashSet<Vector2>(visited);
-                var newPosition = Move(position, Directions.Left, value, newVisited);
+                var newPosition = MovementHelper.MoveAndGetLastPosition(position, Directions.Left, value, newVisited);
                 var steps = new List<Step> { new (position, value, Direction.Left) };
 
                 var state = new State(nextMap, newVisited, steps, newPosition);
@@ -62,7 +63,7 @@ public class ParallelBfsSolveStrategy : ISolveStrategy
             {
                 // Direction up
                 var newVisited = new HashSet<Vector2>(visited);
-                var newPosition = Move(position, Directions.Up, value, newVisited);
+                var newPosition = MovementHelper.MoveAndGetLastPosition(position, Directions.Up, value, newVisited);
                 var steps = new List<Step> { new (position, value, Direction.Up) };
 
                 var state = new State(nextMap, newVisited, steps, newPosition);
@@ -91,7 +92,7 @@ public class ParallelBfsSolveStrategy : ISolveStrategy
                     {
                         // Direction right
                         var newVisited = new HashSet<Vector2>(state.Visited);
-                        var newPosition = Move(position, Directions.Right, value, newVisited);
+                        var newPosition = MovementHelper.MoveAndGetLastPosition(position, Directions.Right, value, newVisited);
                         var newSteps = new List<Step>(state.Steps)
                         {
                             new (position, value, Direction.Right)
@@ -105,7 +106,7 @@ public class ParallelBfsSolveStrategy : ISolveStrategy
                     {
                         // Direction down
                         var newVisited = new HashSet<Vector2>(state.Visited);
-                        var newPosition = Move(position, Directions.Down, value, newVisited);
+                        var newPosition = MovementHelper.MoveAndGetLastPosition(position, Directions.Down, value, newVisited);
                         var newSteps = new List<Step>(state.Steps)
                         {
                             new (position, value, Direction.Down)
@@ -119,7 +120,7 @@ public class ParallelBfsSolveStrategy : ISolveStrategy
                     {
                         // Direction left
                         var newVisited = new HashSet<Vector2>(state.Visited);
-                        var newPosition = Move(position, Directions.Left, value, newVisited);
+                        var newPosition = MovementHelper.MoveAndGetLastPosition(position, Directions.Left, value, newVisited);
                         var newSteps = new List<Step>(state.Steps)
                         {
                             new (position, value, Direction.Left)
@@ -133,7 +134,7 @@ public class ParallelBfsSolveStrategy : ISolveStrategy
                     {
                         // Direction up
                         var newVisited = new HashSet<Vector2>(state.Visited);
-                        var newPosition = Move(position, Directions.Up, value, newVisited);
+                        var newPosition = MovementHelper.MoveAndGetLastPosition(position, Directions.Up, value, newVisited);
                         var newSteps = new List<Step>(state.Steps)
                         {
                             new (position, value, Direction.Up)
@@ -147,22 +148,6 @@ public class ParallelBfsSolveStrategy : ISolveStrategy
         });
         
         return stepsOfSteps.Any() ? stepsOfSteps.First() : Array.Empty<Step>().ToList();
-    }
-    
-    private static Vector2 Move(Vector2 position, Vector2 direction, int steps, HashSet<Vector2> visited)
-    {
-        while (steps != 0)
-        {
-            position += direction;
-            
-            if (visited.Contains(position))
-                continue;
-
-            visited.Add(position);
-            steps--;
-        }
-
-        return position;
     }
 
     private record State(Dictionary<Vector2, int> Map, HashSet<Vector2> Visited, List<Step> Steps, Vector2 Position);
