@@ -36,7 +36,19 @@ public static class Parser
                 
                 // We assume there's only one goal!
                 if (input[y][x] == 'x')
+                {
                     goal = new Vector2(x, y);
+                    
+                    if (x < minX)
+                        minX = x;
+                    else if (x > maxX)
+                        maxX = x;
+
+                    if (y < minY)
+                        minY = y;
+                    else if (y > maxY)
+                        maxY = y;
+                }
             }
         }
         

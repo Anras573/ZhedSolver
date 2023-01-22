@@ -42,7 +42,7 @@ public class ZhedTestLevelData : IEnumerable<object[]>
         var goal = new Vector2(3, 5);
         var map = new Dictionary<Vector2, int> { { new Vector2(3, 3), 2 } };
         var expected = new List<Step> { new (new Vector2(3, 3), 2, Direction.Down) };
-        var bounds = new Bounds(new Vector2(2, 2), new Vector2(4, 4));
+        var bounds = new Bounds(new Vector2(3, 3), new Vector2(3, 5));
 
         return (goal, map, expected, bounds);
     }
@@ -78,7 +78,7 @@ public class ZhedTestLevelData : IEnumerable<object[]>
             new (new Vector2(2, 4), 2, Direction.Right),
             new (new Vector2(4, 5), 2, Direction.Up)
         };
-        var bounds = new Bounds(new Vector2(2, 4), new Vector2(4, 5));
+        var bounds = new Bounds(new Vector2(2, 2), new Vector2(4, 5));
 
         return (goal, map, expected, bounds);
     }
@@ -100,7 +100,7 @@ public class ZhedTestLevelData : IEnumerable<object[]>
             new (new Vector2(4, 5), 2, Direction.Up),
             new (new Vector2(3, 2), 2, Direction.Right)
         };
-        var bounds = new Bounds(new Vector2(1, 2), new Vector2(4, 5));
+        var bounds = new Bounds(new Vector2(1, 2), new Vector2(6, 5));
 
         return (goal, map, expected, bounds);
     }
@@ -126,7 +126,7 @@ public class ZhedTestLevelData : IEnumerable<object[]>
             new (new Vector2(5, 3), 2, Direction.Down),
             new (new Vector2(3, 6), 3, Direction.Right)
         };
-        var bounds = new Bounds(new Vector2(3, 3), new Vector2(6, 6));
+        var bounds = new Bounds(new Vector2(3, 3), new Vector2(9, 6));
 
         return (goal, map, expected, bounds);
     }
