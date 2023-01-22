@@ -46,9 +46,10 @@ public class ParallelPermutationStrategy : ISolveStrategy
     
     private Stack<Step> Dfs(Queue<Vector2> map, Stack<Step> steps, HashSet<Vector2> visited)
     {
-        void Rewind(List<Vector2> moves)
+        void Rewind(List<Vector2> moves, bool shouldPopStack)
         {
-            steps.Pop();
+            if (shouldPopStack)
+                steps.Pop();
 
             foreach (var move in moves)
             {
@@ -80,69 +81,85 @@ public class ParallelPermutationStrategy : ISolveStrategy
         if (!position.X.Equals(_bounds.Max.X) && (!lastRound || (lastRound && targetDirection == Direction.Right)))
         {
             // Direction right
-            var moves = MovementHelper.MoveAndGetMovement(position, Directions.Right, value, visited);
-            steps.Push(new Step(position, value, Direction.Right));
+            var (couldMove, moves) = MovementHelper.TryMoveAndGetMovement(position, Directions.Right, value, visited, _bounds);
 
-            if (moves[^1] == _goal) 
-                return steps;
+            if (couldMove)
+            {
+                steps.Push(new Step(position, value, Direction.Right));
 
-            var solution = Dfs(new Queue<Vector2>(map), steps, visited);
-        
-            if (solution.Count > 0)
-                return solution;
-        
-            Rewind(moves);
+                if (moves[^1] == _goal) 
+                    return steps;
+
+                var solution = Dfs(new Queue<Vector2>(map), steps, visited);
+            
+                if (solution.Count > 0)
+                    return solution;
+            }
+
+            Rewind(moves, couldMove);
         }
         
         if (!position.Y.Equals(_bounds.Max.Y) && (!lastRound || (lastRound && targetDirection == Direction.Down)))
         {
             // Direction down
-            var moves = MovementHelper.MoveAndGetMovement(position, Directions.Down, value, visited);
-            steps.Push(new Step(position, value, Direction.Down));
+            var (couldMove, moves) = MovementHelper.TryMoveAndGetMovement(position, Directions.Down, value, visited, _bounds);
 
-            if (moves[^1] == _goal) 
-                return steps;
+            if (couldMove)
+            {
+                steps.Push(new Step(position, value, Direction.Down));
 
-            var solution = Dfs(new Queue<Vector2>(map), steps, visited);
+                if (moves[^1] == _goal) 
+                    return steps;
+
+                var solution = Dfs(new Queue<Vector2>(map), steps, visited);
         
-            if (solution.Count > 0)
-                return solution;
+                if (solution.Count > 0)
+                    return solution;
+            }
         
-            Rewind(moves);
+            Rewind(moves, couldMove);
         }
         
         if (!position.X.Equals(_bounds.Min.X) && (!lastRound || (lastRound && targetDirection == Direction.Left)))
         {
             // Direction left
-            var moves = MovementHelper.MoveAndGetMovement(position, Directions.Left, value, visited);
-            steps.Push(new Step(position, value, Direction.Left));
+            var (couldMove, moves) = MovementHelper.TryMoveAndGetMovement(position, Directions.Left, value, visited, _bounds);
 
-            if (moves[^1] == _goal) 
-                return steps;
+            if (couldMove)
+            {
+                steps.Push(new Step(position, value, Direction.Left));
 
-            var solution = Dfs(new Queue<Vector2>(map), steps, visited);
+                if (moves[^1] == _goal) 
+                    return steps;
+
+                var solution = Dfs(new Queue<Vector2>(map), steps, visited);
         
-            if (solution.Count > 0)
-                return solution;
+                if (solution.Count > 0)
+                    return solution;
+            }
         
-            Rewind(moves);
+            Rewind(moves, couldMove);
         }
         
         if (!position.Y.Equals(_bounds.Min.Y) && (!lastRound || (lastRound && targetDirection == Direction.Up)))
         {
             // Direction up
-            var moves = MovementHelper.MoveAndGetMovement(position, Directions.Up, value, visited);
-            steps.Push(new Step(position, value, Direction.Up));
+            var (couldMove, moves) = MovementHelper.TryMoveAndGetMovement(position, Directions.Up, value, visited, _bounds);
 
-            if (moves[^1] == _goal) 
-                return steps;
+            if (couldMove)
+            {
+                steps.Push(new Step(position, value, Direction.Up));
 
-            var solution = Dfs(new Queue<Vector2>(map), steps, visited);
+                if (moves[^1] == _goal) 
+                    return steps;
+
+                var solution = Dfs(new Queue<Vector2>(map), steps, visited);
         
-            if (solution.Count > 0)
-                return solution;
+                if (solution.Count > 0)
+                    return solution;
+            }
         
-            Rewind(moves);
+            Rewind(moves, couldMove);
         }
 
         return new Stack<Step>();
