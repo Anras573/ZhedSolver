@@ -34,3 +34,5 @@ sb.AppendLine($"Execution took: {Stopwatch.GetElapsedTime(timestamp).TotalMillis
 Console.WriteLine(sb.ToString());
 
 BenchmarkRunner.Run<Benchmarks>();
+
+Console.ReadKey();
