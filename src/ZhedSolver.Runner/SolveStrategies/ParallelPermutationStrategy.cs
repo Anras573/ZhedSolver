@@ -18,17 +18,69 @@ public class ParallelPermutationStrategy : ISolveStrategy
         _goal = goal;
         
         var coordinates = map.Keys.ToList();
-        var permutations = coordinates.GetPermutations(coordinates.Count);
-
-        bool EndsWithPossibleSolution(IEnumerable<Vector2> permutation)
+        //var permutations = coordinates.Permutations();//coordinates.GetPermutations(coordinates.Count);
+        
+        var permutations = new List<List<Vector2>>(80640);
+        HeapPermute(coordinates, coordinates.Count, permutations);
+        
+        bool EndsWithPossibleSolution(List<Vector2> permutation)
         {
-            var candidate = permutation.Last();
-            return candidate.X.Equals(goal.X) || candidate.Y.Equals(goal.Y);
+            bool IsWithinRange(Vector2 a, Vector2 b, Vector2 c)
+            {
+                return (a.X > MathF.Min(b.X, c.X) && a.X < MathF.Max(b.X, c.X))
+                       || (a.Y > MathF.Min(b.Y, c.Y) && a.Y < MathF.Max(b.Y, c.Y));
+            }
+
+            var count = permutation.Count;
+            var candidate = permutation[^1];
+            
+            if (!(candidate.X.Equals(goal.X) || candidate.Y.Equals(goal.Y)))
+                return false;
+
+            if (count == 1)
+                return true;
+            
+            var candidate2 = permutation[^2];
+            if (!IsWithinRange(candidate2, candidate, goal))
+                return false;
+            
+            if (count == 2)
+                return true;
+            
+            var candidate3 = permutation[^3];
+            if (!IsWithinRange(candidate3, candidate2, candidate))
+                return false;
+            
+            var candidate4 = permutation[^4];
+            return IsWithinRange(candidate4, candidate3, candidate2);
+        }
+        
+        void HeapPermute(List<Vector2> a, int size, List<List<Vector2>> target)
+        {
+            if (size == 1 && EndsWithPossibleSolution(a))
+            {
+                target.Add(new List<Vector2>(a));
+            }
+            else if (size != 1)
+            {
+                for (var i = 0; i < size; i++)
+                {
+                    HeapPermute(a, size - 1, target);
+                    if (size % 2 == 1)
+                    {
+                        (a[0], a[size - 1]) = (a[size - 1], a[0]);
+                    }
+                    else
+                    {
+                        (a[i], a[size - 1]) = (a[size - 1], a[i]);
+                    }
+                }
+            }
         }
 
         var stepsOfSteps = new ConcurrentBag<List<Step>>();
-
-        Parallel.ForEach(permutations.Where(EndsWithPossibleSolution).Select(p => p.ToList()), (permutation, state) =>
+        
+        Parallel.ForEach(permutations, (permutation, state) =>
         {
             var visited = permutation.ToHashSet();
             var mapQueue = new Queue<Vector2>(permutation);
