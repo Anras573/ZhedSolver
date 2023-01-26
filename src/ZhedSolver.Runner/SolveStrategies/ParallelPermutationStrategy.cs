@@ -77,7 +77,14 @@ public class ParallelPermutationStrategy : ISolveStrategy
                 return true;
             
             var candidate8 = permutation[^8];
-            return IsWithinRange(candidate8, candidate7, candidate6);
+            if (!IsWithinRange(candidate8, candidate7, candidate6))
+                return false;
+            
+            if (count == 8)
+                return true;
+            
+            var candidate9 = permutation[^9];
+            return IsWithinRange(candidate9, candidate8, candidate7);
         }
         
         void HeapPermute(List<Vector2> a, int size, List<List<Vector2>> target)
