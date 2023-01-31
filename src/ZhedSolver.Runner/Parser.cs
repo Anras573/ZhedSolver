@@ -19,36 +19,26 @@ public static class Parser
         {
             for (var x = 0; x < input[y].Length; x++)
             {
+                if (input[y][x] == '-') continue;
+                
                 if (char.IsDigit(input[y][x]))
                 {
                     map.Add(new Vector2(x, y), int.Parse(input[y][x].ToString()));
-
-                    if (x < minX)
-                        minX = x;
-                    else if (x > maxX)
-                        maxX = x;
-
-                    if (y < minY)
-                        minY = y;
-                    else if (y > maxY)
-                        maxY = y;
-                }
-                
-                // We assume there's only one goal!
-                if (input[y][x] == 'x')
+                } 
+                else if (input[y][x] == 'x') // We assume there's only one goal!
                 {
                     goal = new Vector2(x, y);
-                    
-                    if (x < minX)
-                        minX = x;
-                    else if (x > maxX)
-                        maxX = x;
-
-                    if (y < minY)
-                        minY = y;
-                    else if (y > maxY)
-                        maxY = y;
                 }
+                
+                if (x < minX)
+                    minX = x;
+                else if (x > maxX)
+                    maxX = x;
+
+                if (y < minY)
+                    minY = y;
+                else if (y > maxY)
+                    maxY = y;
             }
         }
         

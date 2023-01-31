@@ -1,13 +1,13 @@
 ﻿using System.Collections.Concurrent;
 using ZhedSolver.Runner.Helpers;
 using ZhedSolver.Runner.Models;
-using ZhedSolver.Runner.Utils;
 
 namespace ZhedSolver.Runner.SolveStrategies;
 
 public class ParallelPermutationStrategy : ISolveStrategy
 {
     private Dictionary<Vector2, int> _valueLookup = new ();
+    private static Stack<Step> EmptyStack = new();
     private Bounds _bounds;
     private Vector2 _goal;
 
@@ -18,10 +18,8 @@ public class ParallelPermutationStrategy : ISolveStrategy
         _goal = goal;
         
         var coordinates = map.Keys.ToList();
-        //var permutations = coordinates.Permutations();//coordinates.GetPermutations(coordinates.Count);
-        
         var permutations = new List<List<Vector2>>(80640);
-        HeapPermute(coordinates, coordinates.Count, permutations);
+        PermutationsHelper.HeapPermute(coordinates, coordinates.Count, permutations, EndsWithPossibleSolution);
         
         bool EndsWithPossibleSolution(List<Vector2> permutation)
         {
@@ -86,29 +84,6 @@ public class ParallelPermutationStrategy : ISolveStrategy
             var candidate9 = permutation[^9];
             return IsWithinRange(candidate9, candidate8, candidate7);
         }
-        
-        void HeapPermute(List<Vector2> a, int size, List<List<Vector2>> target)
-        {
-            if (size == 1 && EndsWithPossibleSolution(a))
-            {
-                target.Add(new List<Vector2>(a));
-            }
-            else if (size != 1)
-            {
-                for (var i = 0; i < size; i++)
-                {
-                    HeapPermute(a, size - 1, target);
-                    if (size % 2 == 1)
-                    {
-                        (a[0], a[size - 1]) = (a[size - 1], a[0]);
-                    }
-                    else
-                    {
-                        (a[i], a[size - 1]) = (a[size - 1], a[i]);
-                    }
-                }
-            }
-        }
 
         var stepsOfSteps = new ConcurrentBag<List<Step>>();
         
@@ -124,7 +99,7 @@ public class ParallelPermutationStrategy : ISolveStrategy
                 state.Stop();
             }
         });
-        
+
         return stepsOfSteps.FirstOrDefault() ?? Array.Empty<Step>().ToList();
     }
     
@@ -142,7 +117,7 @@ public class ParallelPermutationStrategy : ISolveStrategy
         }
 
         if (!map.Any())
-            return new Stack<Step>();
+            return EmptyStack;
 
         var position = map.Dequeue();
         var value = _valueLookup[position];
