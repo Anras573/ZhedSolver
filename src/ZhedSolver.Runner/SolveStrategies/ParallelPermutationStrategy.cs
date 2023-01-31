@@ -18,7 +18,7 @@ public class ParallelPermutationStrategy : ISolveStrategy
         _goal = goal;
         
         var coordinates = map.Keys.ToList();
-        var permutations = new List<List<Vector2>>(80640);
+        var permutations = new List<List<Vector2>>(2000);
         PermutationsHelper.HeapPermute(coordinates, coordinates.Count, permutations, EndsWithPossibleSolution);
         
         bool EndsWithPossibleSolution(List<Vector2> permutation)
@@ -30,59 +30,34 @@ public class ParallelPermutationStrategy : ISolveStrategy
             }
 
             var count = permutation.Count;
-            var candidate = permutation[^1];
-            
-            if (!(candidate.X.Equals(goal.X) || candidate.Y.Equals(goal.Y)))
-                return false;
 
+            var target = permutation[^1];
+            
+            if (!(target.X.Equals(goal.X) || target.Y.Equals(goal.Y)))
+                return false;
+            
             if (count == 1)
                 return true;
             
-            var candidate2 = permutation[^2];
-            if (!IsWithinRange(candidate2, candidate, goal))
-                return false;
+            var a = goal;
+            var b = goal;
+
+            var index = 1;
             
-            if (count == 2)
-                return true;
-            
-            var candidate3 = permutation[^3];
-            if (!IsWithinRange(candidate3, candidate2, candidate))
-                return false;
-            
-            if (count == 3)
-                return true;
-            
-            var candidate4 = permutation[^4];
-            if (!IsWithinRange(candidate4, candidate3, candidate2))
-                return false;
-            
-            if (count < 7)
-                return true;
-            
-            var candidate5 = permutation[^5];
-            if (!IsWithinRange(candidate5, candidate4, candidate3))
-                return false;
-            
-            var candidate6 = permutation[^6];
-            if (!IsWithinRange(candidate6, candidate5, candidate4))
-                return false;
-            
-            var candidate7 = permutation[^7];
-            if (!IsWithinRange(candidate7, candidate6, candidate5))
-                return false;
-            
-            if (count == 7)
-                return true;
-            
-            var candidate8 = permutation[^8];
-            if (!IsWithinRange(candidate8, candidate7, candidate6))
-                return false;
-            
-            if (count == 8)
-                return true;
-            
-            var candidate9 = permutation[^9];
-            return IsWithinRange(candidate9, candidate8, candidate7);
+            for (var i = permutation.Count - 2; i >= 0; i--)
+            {
+                if (index != 4)
+                    index++;
+                
+                (target, a, b) = (permutation[i], target, a);
+                
+                if (!IsWithinRange(target, a, b))
+                    return false;
+
+                if (index >= 4 && count < 7) return true;
+            }
+
+            return IsWithinRange(target, a, b);
         }
 
         var stepsOfSteps = new ConcurrentBag<List<Step>>();
@@ -221,6 +196,6 @@ public class ParallelPermutationStrategy : ISolveStrategy
             Rewind(moves, couldMove);
         }
 
-        return new Stack<Step>();
+        return EmptyStack;
     }
 }

@@ -1,7 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
-using ZhedSolver.Runner.Models;
 using ZhedSolver.Runner.SolveStrategies;
-using ZhedSolver.Runner.Utils;
 
 namespace ZhedSolver.Runner;
 
@@ -61,6 +59,24 @@ public class Benchmarks
 --x--1--
 ---3----
 --------
+""";
+        Parser.Parse(file).Solve(new ParallelPermutationStrategy());
+    }
+    
+    [Benchmark]
+    public void Level29()
+    {
+        // var file = File.ReadAllLines("input/29.txt");
+        const string file =
+"""
+--------
+--2---1-
+1---x-1-
+--1----1
+-2------
+-1--1---
+------3-
+---1-1--
 """;
         Parser.Parse(file).Solve(new ParallelPermutationStrategy());
     }

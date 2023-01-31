@@ -4,13 +4,13 @@ using BenchmarkDotNet.Running;
 using ZhedSolver.Runner;
 using ZhedSolver.Runner.SolveStrategies;
 
-var files = new[] { "input/11.txt", "input/14.txt", "input/16.txt" };
+var files = new[] { "input/11.txt", "input/14.txt", "input/16.txt", "input/29.txt" };
 
 foreach (var filepath in files)
 {
-    var timestamp = Stopwatch.GetTimestamp();
-
     var file = File.ReadAllLines(filepath);
+
+    var timestamp = Stopwatch.GetTimestamp();
 
     var steps = Parser
         .Parse(file)
