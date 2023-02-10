@@ -1,12 +1,12 @@
 ﻿using ZhedSolver.Runner.Helpers;
 using ZhedSolver.Runner.Models;
-using ZhedSolver.Runner.Utils;
 
 namespace ZhedSolver.Runner.SolveStrategies;
 
 public class PermutationStrategy : ISolveStrategy
 {
     private Dictionary<Vector2, int> _valueLookup = new ();
+    private static Stack<Step> EmptyStack = new();
     private Bounds _bounds;
     private Vector2 _goal;
 
@@ -16,20 +16,19 @@ public class PermutationStrategy : ISolveStrategy
         _bounds = bounds;
         _goal = goal;
         
-        var coordinates = map.Select(kv => kv.Key).ToList();
-        var permutations = coordinates.GetPermutations(coordinates.Count);
-
-        bool EndsWithPossibleSolution(IEnumerable<Vector2> permutation)
-        {
-            var candidate = permutation.Last();
-            return candidate.X.Equals(goal.X) || candidate.Y.Equals(goal.Y);
-        }
+        var coordinates = map.Keys.ToList();
+        var permutations = new List<List<Vector2>>(2000);
+        PermutationsHelper.HeapPermute(
+            coordinates,
+            coordinates.Count,
+            permutations,
+            perm => HeuristicsHelper.EndsWithPossibleSolution(perm, goal));
         
-        foreach (var permutation in permutations.Where(EndsWithPossibleSolution))
+        foreach (var permutation in permutations)
         {
             var permutationList = permutation.ToList();
             var visited = new HashSet<Vector2>(permutationList);
-            var steps = Dfs(new Queue<Vector2>(permutationList), new Stack<Step>(), visited);
+            var steps = Dfs(new Queue<Vector2>(permutationList), new Stack<Step>(permutation.Count), visited);
 
             if (steps.Count > 0)
                 return steps.Reverse().ToList();
@@ -52,7 +51,7 @@ public class PermutationStrategy : ISolveStrategy
         }
 
         if (!map.Any())
-            return new Stack<Step>();
+            return EmptyStack;
 
         var position = map.Dequeue();
         var value = _valueLookup[position];
@@ -71,7 +70,7 @@ public class PermutationStrategy : ISolveStrategy
                     ? Direction.Down
                     : Direction.Up;
         }
-        
+
         if (!position.X.Equals(_bounds.Max.X) && (!lastRound || (lastRound && targetDirection == Direction.Right)))
         {
             // Direction right
@@ -156,6 +155,6 @@ public class PermutationStrategy : ISolveStrategy
             Rewind(moves, couldMove);
         }
 
-        return new Stack<Step>();
+        return EmptyStack;
     }
 }

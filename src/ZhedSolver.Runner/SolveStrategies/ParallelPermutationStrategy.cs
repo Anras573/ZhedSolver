@@ -19,55 +19,22 @@ public class ParallelPermutationStrategy : ISolveStrategy
         
         var coordinates = map.Keys.ToList();
         var permutations = new List<List<Vector2>>(2000);
-        PermutationsHelper.HeapPermute(coordinates, coordinates.Count, permutations, EndsWithPossibleSolution);
+        PermutationsHelper.HeapPermute(
+            coordinates,
+            coordinates.Count,
+            permutations,
+            perm => HeuristicsHelper.EndsWithPossibleSolution(perm, goal));
         
-        bool EndsWithPossibleSolution(List<Vector2> permutation)
-        {
-            bool IsWithinRange(Vector2 a, Vector2 b, Vector2 c)
-            {
-                return (a.X > MathF.Min(b.X, c.X) && a.X < MathF.Max(b.X, c.X))
-                       || (a.Y > MathF.Min(b.Y, c.Y) && a.Y < MathF.Max(b.Y, c.Y));
-            }
-
-            var count = permutation.Count;
-
-            var target = permutation[^1];
-            
-            if (!(target.X.Equals(goal.X) || target.Y.Equals(goal.Y)))
-                return false;
-            
-            if (count == 1)
-                return true;
-            
-            var a = goal;
-            var b = goal;
-
-            var index = 1;
-            
-            for (var i = permutation.Count - 2; i >= 0; i--)
-            {
-                if (index != 4)
-                    index++;
-                
-                (target, a, b) = (permutation[i], target, a);
-                
-                if (!IsWithinRange(target, a, b))
-                    return false;
-
-                if (index >= 4 && count < 7) return true;
-            }
-
-            return IsWithinRange(target, a, b);
-        }
-
         var stepsOfSteps = new ConcurrentBag<List<Step>>();
-        
+
+        var originalVisited = coordinates.ToHashSet();
+
         Parallel.ForEach(permutations, (permutation, state) =>
         {
-            var visited = permutation.ToHashSet();
+            var visited = new HashSet<Vector2>(originalVisited);
             var mapQueue = new Queue<Vector2>(permutation);
-            var steps = Dfs(mapQueue, new Stack<Step>(), visited);
-
+            var steps = Dfs(mapQueue, new Stack<Step>(permutation.Count), visited);
+        
             if (steps.Count > 0)
             {
                 stepsOfSteps.Add(steps.Reverse().ToList());
@@ -111,7 +78,7 @@ public class ParallelPermutationStrategy : ISolveStrategy
                     ? Direction.Down
                     : Direction.Up;
         }
-        
+
         if (!position.X.Equals(_bounds.Max.X) && (!lastRound || (lastRound && targetDirection == Direction.Right)))
         {
             // Direction right

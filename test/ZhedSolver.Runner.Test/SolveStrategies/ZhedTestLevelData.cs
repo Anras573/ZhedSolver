@@ -153,7 +153,6 @@ public class ZhedTestLevelData : IEnumerable<object[]>
         
         PermutationsHelper.HeapPermute(expected, expected.Count, expectedList, list =>
         {
-            
             if (list[0].Direction == Direction.Down && list[0].Value != 3) 
                 return false;
 

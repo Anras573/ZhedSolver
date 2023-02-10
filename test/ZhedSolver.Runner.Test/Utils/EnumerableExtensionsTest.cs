@@ -1,5 +1,4 @@
-﻿using System.Numerics;
-using ZhedSolver.Runner.Utils;
+﻿using ZhedSolver.Runner.Extensions;
 
 namespace ZhedSolver.Runner.Test.Utils;
 
