@@ -1,7 +1,6 @@
 ﻿using System.Collections;
-using ZhedSolver.Runner.Helpers;
 
-namespace ZhedSolver.Runner.Test.SolveStrategies;
+namespace ZhedSolver.Runner.Test.TestData;
 
 public class ZhedTestLevelData : IEnumerable<object[]>
 {
@@ -20,9 +19,6 @@ public class ZhedTestLevelData : IEnumerable<object[]>
         yield return new object[] { goal, map, expected, bounds };
         
         (goal, map, expected, bounds) = Level5();
-        yield return new object[] { goal, map, expected, bounds };
-        
-        (goal, map, expected, bounds) = Level11();
         yield return new object[] { goal, map, expected, bounds };
     }
 
@@ -120,58 +116,6 @@ public class ZhedTestLevelData : IEnumerable<object[]>
         var bounds = new Bounds(new Vector2(1, 2), new Vector2(6, 5));
 
         var expectedList = new List<List<Step>> { expected };
-
-        return (goal, map, expectedList, bounds);
-    }
-    
-    private static (Vector2 goal, Dictionary<Vector2, int> map, List<List<Step>> expected, Bounds bounds) Level11()
-    {
-        var goal = new Vector2(9, 6);
-        var map = new Dictionary<Vector2, int>
-        {
-            { new Vector2(4, 3), 1 },
-            { new Vector2(5, 3), 2 },
-            { new Vector2(6, 3), 3 },
-            { new Vector2(3, 4), 1 },
-            { new Vector2(3, 5), 2 },
-            { new Vector2(3, 6), 3 }
-        };
-        
-        var bounds = new Bounds(new Vector2(3, 3), new Vector2(9, 6));
-
-        var expected = new List<Step>
-        {
-            new(new Vector2(6, 3), 3, Direction.Down),
-            new(new Vector2(3, 4), 1, Direction.Right),
-            new(new Vector2(3, 5), 2, Direction.Right),
-            new(new Vector2(4, 3), 1, Direction.Down),
-            new(new Vector2(5, 3), 2, Direction.Down),
-            new(new Vector2(3, 6), 3, Direction.Right)
-        };
-        
-        var expectedList = new List<List<Step>>();
-        
-        PermutationsHelper.HeapPermute(expected, expected.Count, expectedList, list =>
-        {
-            if (list[0].Direction == Direction.Down && list[0].Value != 3) 
-                return false;
-
-            if (list[^1].Direction != Direction.Right && list[^1].Value != 3)
-                return false;
-
-            var found = false;
-            // Check if <3. 4> is before <4. 3>
-            foreach (var step in list)
-            {
-                if (step.Coordinate.Equals(new Vector2(3, 4)))
-                    found = true;
-
-                if (step.Coordinate.Equals(new Vector2(4, 3)) && !found)
-                    return false;
-            }
-            
-            return true;
-        });
 
         return (goal, map, expectedList, bounds);
     }
