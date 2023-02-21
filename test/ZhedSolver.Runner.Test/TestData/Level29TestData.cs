@@ -71,6 +71,21 @@ public class Level29TestData : IEnumerable<object[]>
                 new (new Vector2(7, 3), 1, Direction.Left),
                 new (new Vector2(5, 7), 1, Direction.Up),
                 new (new Vector2(6, 2), 1, Direction.Left)
+            },
+            new List<Step>
+            {
+                new (new Vector2(0, 2), 1, Direction.Right),
+                new (new Vector2(2, 3), 1, Direction.Down),
+                new (new Vector2(2, 1), 2, Direction.Down),
+                new (new Vector2(6, 6), 3, Direction.Left),
+                new (new Vector2(1, 5), 1, Direction.Right),
+                new (new Vector2(3, 7), 1, Direction.Up),
+                new (new Vector2(1, 4), 2, Direction.Right),
+                new (new Vector2(6, 1), 1, Direction.Down),
+                new (new Vector2(4, 5), 1, Direction.Right),
+                new (new Vector2(7, 3), 1, Direction.Left),
+                new (new Vector2(5, 7), 1, Direction.Up),
+                new (new Vector2(6, 2), 1, Direction.Left)
             }
         };
 

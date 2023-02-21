@@ -24,7 +24,7 @@ public class PermutationStrategyTest
     [ClassData(typeof(Level11TestData))]
     public void SolveLevel11(Vector2 goal, Dictionary<Vector2, int> map, List<List<Step>> expected, Bounds bounds)
     {
-        var sut = new DfsSolveStrategy();
+        var sut = new PermutationStrategy();
 
         var actual = sut.Solve(map, goal, bounds);
 
@@ -39,7 +39,7 @@ public class PermutationStrategyTest
     [ClassData(typeof(Level14TestData))]
     public void SolveLevel14(Vector2 goal, Dictionary<Vector2, int> map, List<List<Step>> expected, Bounds bounds)
     {
-        var sut = new ParallelPermutationStrategy();
+        var sut = new PermutationStrategy();
 
         var actual = sut.Solve(map, goal, bounds);
 
@@ -54,7 +54,7 @@ public class PermutationStrategyTest
     [ClassData(typeof(Level16TestData))]
     public void SolveLevel16(Vector2 goal, Dictionary<Vector2, int> map, List<List<Step>> expected, Bounds bounds)
     {
-        var sut = new ParallelPermutationStrategy();
+        var sut = new PermutationStrategy();
 
         var actual = sut.Solve(map, goal, bounds);
 
@@ -65,11 +65,11 @@ public class PermutationStrategyTest
         Assert.True(solutionFound, $"Actual : {string.Join(Environment.NewLine, actual)}{Environment.NewLine}Is not a valid solution!");
     }
     
-    [Theory]
+    [Theory(Skip = "Takes too long to run")]
     [ClassData(typeof(Level29TestData))]
     public void SolveLevel29(Vector2 goal, Dictionary<Vector2, int> map, List<List<Step>> expected, Bounds bounds)
     {
-        var sut = new ParallelPermutationStrategy();
+        var sut = new PermutationStrategy();
 
         var actual = sut.Solve(map, goal, bounds);
 

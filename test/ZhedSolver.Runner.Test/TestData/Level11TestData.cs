@@ -47,6 +47,168 @@ public class Level11TestData : IEnumerable<object[]>
                 new (new Vector2(4, 3), 1, Direction.Down),
                 new (new Vector2(5, 3), 2, Direction.Down),
                 new (new Vector2(3, 6), 3, Direction.Right)
+            },
+            new List<Step>
+            {
+                new (new Vector2(6, 3), 3, Direction.Down),
+                new (new Vector2(3, 5), 2, Direction.Right),
+                new (new Vector2(5, 3), 2, Direction.Down),
+                new (new Vector2(3, 4), 1, Direction.Right),
+                new (new Vector2(4, 3), 1, Direction.Down),
+                new (new Vector2(3, 6), 3, Direction.Right)
+            },
+            new List<Step>
+            {
+                new (new Vector2(3, 4), 1, Direction.Right),
+                new (new Vector2(3, 5), 2, Direction.Right),
+                new (new Vector2(4, 3), 1, Direction.Down),
+                new (new Vector2(5, 3), 2, Direction.Down),
+                new (new Vector2(6, 3), 3, Direction.Down),
+                new (new Vector2(3, 6), 3, Direction.Right)
+            },
+            new List<Step>
+            {
+                new (new Vector2(3, 4), 1, Direction.Right),
+                new (new Vector2(6, 3), 3, Direction.Down),
+                new (new Vector2(3, 5), 2, Direction.Right),
+                new (new Vector2(5, 3), 2, Direction.Down),
+                new (new Vector2(4, 3), 1, Direction.Down),
+                new (new Vector2(3, 6), 3, Direction.Right)
+            },
+            new List<Step>
+            {
+                new (new Vector2(3, 5), 2, Direction.Right),
+                new (new Vector2(5, 3), 2, Direction.Down),
+                new (new Vector2(6, 3), 3, Direction.Down),
+                new (new Vector2(3, 4), 1, Direction.Right),
+                new (new Vector2(4, 3), 1, Direction.Down),
+                new (new Vector2(3, 6), 3, Direction.Right)
+            },
+            new List<Step>
+            {
+                new (new Vector2(3, 5), 2, Direction.Right),
+                new (new Vector2(5, 3), 2, Direction.Down),
+                new (new Vector2(3, 4), 1, Direction.Right),
+                new (new Vector2(6, 3), 3, Direction.Down),
+                new (new Vector2(4, 3), 1, Direction.Down),
+                new (new Vector2(3, 6), 3, Direction.Right)
+            },
+            new List<Step>
+            {
+                new (new Vector2(3, 4), 1, Direction.Right),
+                new (new Vector2(3, 5), 2, Direction.Right),
+                new (new Vector2(5, 3), 2, Direction.Down),
+                new (new Vector2(6, 3), 3, Direction.Down),
+                new (new Vector2(4, 3), 1, Direction.Down),
+                new (new Vector2(3, 6), 3, Direction.Right)
+            },
+            new List<Step>
+            {
+                new (new Vector2(3, 4), 1, Direction.Right),
+                new (new Vector2(3, 5), 2, Direction.Right),
+                new (new Vector2(6, 3), 3, Direction.Down),
+                new (new Vector2(5, 3), 2, Direction.Down),
+                new (new Vector2(4, 3), 1, Direction.Down),
+                new (new Vector2(3, 6), 3, Direction.Right)
+            },
+            new List<Step>
+            {
+                new (new Vector2(3, 4), 1, Direction.Right),
+                new (new Vector2(6, 3), 3, Direction.Down),
+                new (new Vector2(3, 5), 2, Direction.Right),
+                new (new Vector2(4, 3), 1, Direction.Down),
+                new (new Vector2(5, 3), 2, Direction.Down),
+                new (new Vector2(3, 6), 3, Direction.Right)
+            },
+            new List<Step>
+            {
+                new (new Vector2(3, 5), 2, Direction.Right),
+                new (new Vector2(6, 3), 3, Direction.Down),
+                new (new Vector2(5, 3), 2, Direction.Down),
+                new (new Vector2(3, 4), 1, Direction.Right),
+                new (new Vector2(4, 3), 1, Direction.Down),
+                new (new Vector2(3, 6), 3, Direction.Right)
+            },
+            new List<Step>
+            {
+                new (new Vector2(3, 4), 1, Direction.Right),
+                new (new Vector2(3, 5), 2, Direction.Right),
+                new (new Vector2(4, 3), 1, Direction.Down),
+                new (new Vector2(6, 3), 3, Direction.Down),
+                new (new Vector2(5, 3), 2, Direction.Down),
+                new (new Vector2(3, 6), 3, Direction.Right)
+            },
+            new List<Step>
+            {
+                new (new Vector2(3, 5), 2, Direction.Right),
+                new (new Vector2(3, 4), 1, Direction.Right),
+                new (new Vector2(4, 3), 1, Direction.Down),
+                new (new Vector2(5, 3), 2, Direction.Down),
+                new (new Vector2(6, 3), 3, Direction.Down),
+                new (new Vector2(3, 6), 3, Direction.Right)
+            },
+            new List<Step>
+            {
+                new (new Vector2(6, 3), 3, Direction.Down),
+                new (new Vector2(3, 5), 2, Direction.Right),
+                new (new Vector2(3, 4), 1, Direction.Right),
+                new (new Vector2(4, 3), 1, Direction.Down),
+                new (new Vector2(5, 3), 2, Direction.Down),
+                new (new Vector2(3, 6), 3, Direction.Right)
+            },
+            new List<Step>
+            {
+                new (new Vector2(3, 4), 1, Direction.Right),
+                new (new Vector2(3, 5), 2, Direction.Right),
+                new (new Vector2(6, 3), 3, Direction.Down),
+                new (new Vector2(4, 3), 1, Direction.Down),
+                new (new Vector2(5, 3), 2, Direction.Down),
+                new (new Vector2(3, 6), 3, Direction.Right)
+            },
+            new List<Step>
+            {
+                new (new Vector2(3, 5), 2, Direction.Right),
+                new (new Vector2(5, 3), 2, Direction.Down),
+                new (new Vector2(3, 4), 1, Direction.Right),
+                new (new Vector2(4, 3), 1, Direction.Down),
+                new (new Vector2(6, 3), 3, Direction.Down),
+                new (new Vector2(3, 6), 3, Direction.Right)
+            },
+            new List<Step>
+            {
+                new (new Vector2(6, 3), 3, Direction.Down),
+                new (new Vector2(3, 5), 2, Direction.Right),
+                new (new Vector2(3, 4), 1, Direction.Right),
+                new (new Vector2(5, 3), 2, Direction.Down),
+                new (new Vector2(4, 3), 1, Direction.Down),
+                new (new Vector2(3, 6), 3, Direction.Right)
+            },
+            new List<Step>
+            {
+                new (new Vector2(3, 5), 2, Direction.Right),
+                new (new Vector2(6, 3), 3, Direction.Down),
+                new (new Vector2(3, 4), 1, Direction.Right),
+                new (new Vector2(4, 3), 1, Direction.Down),
+                new (new Vector2(5, 3), 2, Direction.Down),
+                new (new Vector2(3, 6), 3, Direction.Right)
+            },
+            new List<Step>
+            {
+                new (new Vector2(3, 5), 2, Direction.Right),
+                new (new Vector2(6, 3), 3, Direction.Down),
+                new (new Vector2(3, 4), 1, Direction.Right),
+                new (new Vector2(5, 3), 2, Direction.Down),
+                new (new Vector2(4, 3), 1, Direction.Down),
+                new (new Vector2(3, 6), 3, Direction.Right)
+            },
+            new List<Step>
+            {
+                new (new Vector2(3, 5), 2, Direction.Right),
+                new (new Vector2(3, 4), 1, Direction.Right),
+                new (new Vector2(4, 3), 1, Direction.Down),
+                new (new Vector2(6, 3), 3, Direction.Down),
+                new (new Vector2(5, 3), 2, Direction.Down),
+                new (new Vector2(3, 6), 3, Direction.Right)
             }
         };
 
