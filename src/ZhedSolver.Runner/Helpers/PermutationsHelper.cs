@@ -24,4 +24,63 @@ public static class PermutationsHelper
             }
         }
     }
+    
+    public static List<List<Vector2>> GetPossiblePaths(List<Vector2> initialList, Vector2 goal)
+    {
+        bool IsWithinRange(Vector2 a, Vector2 b, Vector2 c)
+        {
+            return (a.X > MathF.Min(b.X, c.X) && a.X < MathF.Max(b.X, c.X))
+                   || (a.Y > MathF.Min(b.Y, c.Y) && a.Y < MathF.Max(b.Y, c.Y));
+        }
+        
+        var possiblePaths = new List<List<Vector2>>();
+
+        var list = initialList
+            .Where(v => v.X.Equals(goal.X) || v.Y.Equals(goal.Y))
+            .Select(v => new List<Vector2>(initialList.Count) { v })
+            .ToList();
+
+        var priorityQueue = new PriorityQueue<State, int>();
+
+        foreach (var l in list)
+        {
+            var mm = initialList.Except(l).ToList();
+            priorityQueue.Enqueue(new State(mm, l), mm.Count);
+        }
+        
+        var (start, end) = (goal, goal);
+
+        while (priorityQueue.TryDequeue(out var state, out var priority))
+        {
+            priority--;
+
+            if (state.PossiblePath.Count < 2)
+                (start, end) = (state.PossiblePath[0], goal);
+            else
+                (start, end) = (state.PossiblePath[^2], state.PossiblePath[^1]);
+
+            var newList = state.MissingMembers
+                .Where(v => IsWithinRange(v, start, end)).ToList();
+
+            foreach (var l in newList)
+            {
+                var possiblePath = new List<Vector2>(state.PossiblePath) { l };
+            
+                if (possiblePath.Count == initialList.Count)
+                {
+                    possiblePath.Reverse();
+                    possiblePaths.Add(possiblePath);
+                }
+                else
+                {
+                    var newState = new State(state.MissingMembers.Where(m => m != l).ToList(), possiblePath);
+                    priorityQueue.Enqueue(newState, priority);
+                }
+            }
+        }
+        
+        return possiblePaths;
+    }
+    
+    private record State(List<Vector2> MissingMembers, List<Vector2> PossiblePath);
 }

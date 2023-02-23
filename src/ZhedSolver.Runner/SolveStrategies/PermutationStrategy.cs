@@ -18,11 +18,18 @@ public class PermutationStrategy : ISolveStrategy
         
         var coordinates = map.Keys.ToList();
         var permutations = new List<List<Vector2>>(2000);
-        PermutationsHelper.HeapPermute(
-            coordinates,
-            coordinates.Count,
-            permutations,
-            perm => HeuristicsHelper.EndsWithPossibleSolution(perm, goal));
+        if (coordinates.Count < 7)
+        {
+            PermutationsHelper.HeapPermute(
+                coordinates,
+                coordinates.Count,
+                permutations,
+                perm => HeuristicsHelper.EndsWithPossibleSolution(perm, goal));
+        }
+        else
+        {
+            permutations = PermutationsHelper.GetPossiblePaths(coordinates, goal);
+        }
         
         foreach (var permutation in permutations)
         {
