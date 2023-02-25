@@ -24,7 +24,7 @@ public static class PermutationsHelper
             }
         }
     }
-    
+
     public static List<List<Vector2>> GetPossiblePaths(List<Vector2> initialList, Vector2 goal)
     {
         bool IsWithinRange(Vector2 a, Vector2 b, Vector2 c)
@@ -33,24 +33,24 @@ public static class PermutationsHelper
                    || (a.Y > MathF.Min(b.Y, c.Y) && a.Y < MathF.Max(b.Y, c.Y));
         }
         
-        var possiblePaths = new List<List<Vector2>>();
+        var possiblePaths = new List<List<Vector2>>(20_000);
 
         var list = initialList
             .Where(v => v.X.Equals(goal.X) || v.Y.Equals(goal.Y))
             .Select(v => new List<Vector2>(initialList.Count) { v })
             .ToList();
 
-        var queue = new Queue<State>();
+        var queue = new Stack<State>();
 
         foreach (var l in list)
         {
             var mm = initialList.Except(l).ToList();
-            queue.Enqueue(new State(mm, l));
+            queue.Push(new State(mm, l));
         }
         
         var (start, end) = (goal, goal);
 
-        while (queue.TryDequeue(out var state))
+        while (queue.TryPop(out var state))
         {
             if (state.PossiblePath.Count < 2)
                 (start, end) = (state.PossiblePath[0], goal);
@@ -58,14 +58,12 @@ public static class PermutationsHelper
                 (start, end) = (state.PossiblePath[^2], state.PossiblePath[^1]);
 
             var newList = state.MissingMembers
-                .Where(v => IsWithinRange(v, start, end)).ToList();
-
-            var s = new Stack<Vector2>(state.PossiblePath);
-
+                .Where(v => IsWithinRange(v, start, end));
+            
             foreach (var l in newList)
             {
                 var possiblePath = new List<Vector2>(state.PossiblePath) { l };
-            
+
                 if (possiblePath.Count == initialList.Count)
                 {
                     possiblePath.Reverse();
@@ -74,13 +72,13 @@ public static class PermutationsHelper
                 else
                 {
                     var newState = new State(state.MissingMembers.Where(m => m != l).ToList(), possiblePath);
-                    queue.Enqueue(newState);
+                    queue.Push(newState);
                 }
             }
         }
         
         return possiblePaths;
     }
-    
+
     private record State(List<Vector2> MissingMembers, List<Vector2> PossiblePath);
 }
