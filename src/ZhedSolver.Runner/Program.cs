@@ -40,5 +40,3 @@ foreach (var filepath in files)
 }
 
 BenchmarkRunner.Run<Benchmarks>();
-
-//Console.ReadKey();

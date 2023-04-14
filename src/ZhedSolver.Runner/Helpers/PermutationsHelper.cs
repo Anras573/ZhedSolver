@@ -40,17 +40,17 @@ public static class PermutationsHelper
             .Select(v => new List<Vector2>(initialList.Count) { v })
             .ToList();
 
-        var queue = new Stack<State>();
+        var states = new Stack<State>();
 
         foreach (var l in list)
         {
             var mm = initialList.Except(l).ToList();
-            queue.Push(new State(mm, l));
+            states.Push(new State(mm, l));
         }
         
-        var (start, end) = (goal, goal);
+        Vector2 start, end;
 
-        while (queue.TryPop(out var state))
+        while (states.TryPop(out var state))
         {
             if (state.PossiblePath.Count < 2)
                 (start, end) = (state.PossiblePath[0], goal);
@@ -58,7 +58,7 @@ public static class PermutationsHelper
                 (start, end) = (state.PossiblePath[^2], state.PossiblePath[^1]);
 
             var newList = state.MissingMembers
-                .Where(v => IsWithinRange(v, start, end));
+                .Where(v => IsWithinRange(v, start, end)).ToList();
             
             foreach (var l in newList)
             {
@@ -72,13 +72,13 @@ public static class PermutationsHelper
                 else
                 {
                     var newState = new State(state.MissingMembers.Where(m => m != l).ToList(), possiblePath);
-                    queue.Push(newState);
+                    states.Push(newState);
                 }
             }
         }
         
         return possiblePaths;
     }
-
+    
     private record State(List<Vector2> MissingMembers, List<Vector2> PossiblePath);
 }
