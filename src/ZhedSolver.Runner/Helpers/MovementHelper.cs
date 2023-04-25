@@ -25,21 +25,13 @@ public static class MovementHelper
 
     public static (bool, List<Vector2>) TryMoveAndGetMovement(Vector2 position, Vector2 direction, int steps, HashSet<Vector2> visited, Bounds bounds)
     {
-        bool OutOfBounds()
-        {
-            return position.X > bounds.Max.X
-               || position.X < bounds.Min.X
-               || position.Y > bounds.Max.Y
-               || position.Y < bounds.Min.Y;
-        }
-        
         var moves = new List<Vector2>(steps);
         
         while (steps != 0)
         {
             position += direction;
 
-            if (OutOfBounds())
+            if (bounds.OutOfBounds(position))
                 return (false, moves);
             
             if (visited.Contains(position))
