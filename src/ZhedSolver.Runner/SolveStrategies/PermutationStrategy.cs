@@ -31,17 +31,19 @@ public class PermutationStrategy : ISolveStrategy
             permutations = PermutationsHelper.GetPossiblePaths(coordinates, goal);
         }
         
+        var size = (int)(_bounds.Min.X + 1 * _bounds.Min.Y + 1 * _bounds.Max.X * _bounds.Max.Y);
+        
         foreach (var permutation in permutations)
         {
-            var permutationList = permutation.ToList();
-            var visited = new HashSet<Vector2>(permutationList);
-            var steps = Dfs(new Queue<Vector2>(permutationList), new Stack<Step>(permutation.Count), visited);
+            var visited = permutation.ToHashSet();
+            visited.EnsureCapacity(size);
+            var steps = Dfs(new Queue<Vector2>(permutation), new Stack<Step>(permutation.Count), visited);
 
             if (steps.Count > 0)
                 return steps.Reverse().ToList();
         }
         
-        return new List<Step>();
+        return Array.Empty<Step>().ToList();
     }
     
     private Stack<Step> Dfs(Queue<Vector2> map, Stack<Step> steps, HashSet<Vector2> visited)
