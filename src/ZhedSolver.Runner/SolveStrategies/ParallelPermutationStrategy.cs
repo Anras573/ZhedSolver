@@ -36,10 +36,12 @@ public class ParallelPermutationStrategy : ISolveStrategy
         var stepsOfSteps = new ConcurrentBag<List<Step>>();
 
         var originalVisited = coordinates.ToHashSet();
+        var size = (int)(_bounds.Min.X + 1 * _bounds.Min.Y + 1 * _bounds.Max.X * _bounds.Max.Y);
 
         Parallel.ForEach(permutations, (permutation, state) =>
         {
             var visited = new HashSet<Vector2>(originalVisited);
+            visited.EnsureCapacity(size);
             var mapQueue = new Queue<Vector2>(permutation);
             var steps = Dfs(mapQueue, new Stack<Step>(permutation.Count), visited);
         
